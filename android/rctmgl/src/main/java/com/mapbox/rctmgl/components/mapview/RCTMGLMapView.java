@@ -683,6 +683,10 @@ public class RCTMGLMapView extends MapView implements OnMapReadyCallback, Mapbox
 
     }
 
+    private float getDisplayDensity() {
+        return mContext.getResources().getDisplayMetrics().density;
+    }
+
     public void setReactStyleURL(String styleURL) {
         mStyleURL = styleURL;
 
@@ -776,7 +780,7 @@ public class RCTMGLMapView extends MapView implements OnMapReadyCallback, Mapbox
         if (position.hasKey("bottom")) {
             mAttributionGravity |= Gravity.BOTTOM;
         }
-        float density = mContext.getResources().getDisplayMetrics().density;
+        float density = getDisplayDensity();
         mAttributionMargin = new int[]{
             position.hasKey("left") ? (int) density * position.getInt("left") : 0,
             position.hasKey("top") ? (int) density * position.getInt("top") : 0,
@@ -844,6 +848,9 @@ public class RCTMGLMapView extends MapView implements OnMapReadyCallback, Mapbox
     }
 
     public void getCoordinateFromView(String callbackID, PointF pointInView) {
+        float density = getDisplayDensity();
+        pointInView.x *= density;
+        pointInView.y *= density;
 
         LatLng mapCoordinate = mMap.getProjection().fromScreenLocation(pointInView);
         WritableMap payload = new WritableNativeMap();
