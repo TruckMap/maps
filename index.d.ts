@@ -10,6 +10,7 @@ import {
   ViewProps,
   ViewStyle,
   StyleProp,
+  TextStyle,
   ImageSourcePropType,
 } from 'react-native';
 import ReactNative from 'react-native';
@@ -131,14 +132,14 @@ declare namespace MapboxGL {
   }
 
   namespace geoUtils {
-    function makePoint<P = Properties>(coordinates: Position, properties?: P, options?: PositionsOptions): Feature<Point, P>;
+    function makePoint<P = Properties>(coordinates: Position, properties?: P, options?: PositionsOptions): Feature<GeoJSON.Point, P>;
     function makeLineString<P = Properties>(coordinates: Position[], properties?: P, options?: PositionsOptions): Feature<LineString, P>;
     function makeLatLngBounds<G = Geometry, P = Properties>(northEastCoordinates: Position[], southWestCoordinates: Position[]): FeatureCollection<G, P>;
     function makeFeature<G = Geometry, P = Properties>(geometry: G, properties?: P): Feature<G, P>;
-    function makeFeatureCollection<G = Geometry, P = Properties>(features: Array<FeatureCollection<G, P>>, options?: PositionsOptions): FeatureCollection<G, P>;
+    function makeFeatureCollection<G = Geometry, P = Properties>(features: Array<Feature<G, P>>, options?: PositionsOptions): FeatureCollection<G, P>;
     function addToFeatureCollection<G = Geometry, P = Properties>(newFeatureCollection: Array<FeatureCollection<G, P>>, newFeature: Feature<G, P>): FeatureCollection<G, P>;
     function calculateDistance(origin: Coord, dest: Coord, options?: UnitsOptions): number;
-    function pointAlongLine(newLineString: Feature<LineString> | LineString, distAlong: number, options?: UnitsOptions): Feature<Point>;
+    function pointAlongLine(newLineString: Feature<LineString> | LineString, distAlong: number, options?: UnitsOptions): Feature<GeoJSON.Point>;
     function getOrCalculateVisibleRegion(coord: { lon: number; lat: number }, zoomLevel: number, width: number, height: number, nativeRegion: { properties: { visibleBounds: number[] }; visibleBounds: number[] }): void;
   }
 
@@ -297,6 +298,18 @@ declare namespace MapboxGL {
   class VectorSource extends Component<VectorSourceProps> { }
   class ShapeSource extends Component<ShapeSourceProps> {
     getClusterExpansionZoom(clusterId: number): Promise<number>;
+        /**
+    * Returns all the leaves of a cluster with pagination support.
+    * @param clusterId the ID of the cluster
+    * @param limit the number of leaves to return
+    * @param offset the amount of points to skip (for pagination)
+    */
+     getClusterLeaves: (clusterId: number, limit: number, offset: number ) => object
+             /**
+    * Returns the children of a cluster (on the next zoom level).
+    * @param clusterId the ID of the cluster   
+    */
+    getClusterChildren: (clusterId: number) => object
   }
   class RasterSource extends Component<RasterSourceProps> { }
 
@@ -420,6 +433,12 @@ export type AttributionPosition =
   | { bottom: number; left: number }
   | { bottom: number; right: number };
 
+export type LogoPosition =
+  | { top: number; left: number }
+  | { top: number; right: number }
+  | { bottom: number; left: number }
+  | { bottom: number; right: number };
+
 export interface RegionPayload {
   zoomLevel: number;
   heading: number;
@@ -445,12 +464,14 @@ export interface MapViewProps extends ViewProps {
   attributionEnabled?: boolean;
   attributionPosition?: AttributionPosition;
   logoEnabled?: boolean;
+  logoPosition?: LogoPosition;
   compassEnabled?: boolean;
   compassViewPosition?: number;
   compassViewMargins?: Point;
   surfaceView?: boolean;
   regionWillChangeDebounceTime?: number;
   regionDidChangeDebounceTime?: number;
+  tintColor?: string;
 
   onPress?: (feature: GeoJSON.Feature) => void;
   onLongPress?: (feature: GeoJSON.Feature) => void;
@@ -667,6 +688,7 @@ export interface SymbolLayerStyle {
   symbolPlacement?: 'point' | 'line' | Expression;
   symbolSpacing?: number | Expression;
   symbolAvoidEdges?: boolean | Expression;
+  symbolSortKey?: number | Expression;
   symbolZOrder?: 'auto' | 'viewport-y' | 'source' | Expression;
   iconAllowOverlap?: boolean | Expression;
   iconIgnorePlacement?: boolean | Expression;
@@ -781,7 +803,7 @@ export interface CalloutProps extends Omit<ViewProps, 'style'> {
   containerStyle?: StyleProp<WithExpression<ViewStyle>>;
   contentStyle?: StyleProp<WithExpression<ViewStyle>>;
   tipStyle?: StyleProp<WithExpression<ViewStyle>>;
-  textStyle?: StyleProp<WithExpression<ViewStyle>>;
+  textStyle?: StyleProp<WithExpression<TextStyle>>;
 }
 
 export interface TileSourceProps extends ViewProps {
@@ -810,6 +832,7 @@ export interface ShapeSourceProps extends ViewProps {
   maxZoomLevel?: number;
   buffer?: number;
   tolerance?: number;
+  lineMetrics?: boolean;
   images?: { assets?: string[] } & { [key: string]: ImageSourcePropType };
   onPress?: (event: OnPressEvent) => void;
   hitbox?: {
@@ -869,6 +892,8 @@ export interface HeatmapLayerProps extends LayerBaseProps {
 
 export interface ImagesProps extends ViewProps {
   images?: { assets?: string[] } & { [key: string]: ImageSourcePropType };
+  nativeAssetImages?: string[]
+  onImageMissing?: (imageKey: string) => void
 }
 
 export interface ImageSourceProps extends ViewProps {

@@ -131,6 +131,8 @@ public class RCTMGLMapView extends MapView implements OnMapReadyCallback, Mapbox
     private Integer mAttributionGravity;
     private int[] mAttributionMargin;
     private Boolean mLogoEnabled;
+    private Integer mLogoGravity;
+    private int[] mLogoMargins;
     private Boolean mCompassEnabled;
     private ReadableMap mCompassViewMargins;
     private int mCompassViewPosition = -1;
@@ -150,6 +152,8 @@ public class RCTMGLMapView extends MapView implements OnMapReadyCallback, Mapbox
     private boolean mAnnotationClicked = false;
 
     private LocationComponentManager mLocationComponentManager = null;
+
+    private @Nullable Integer mTintColor = null;
 
     public RCTMGLMapView(Context context, RCTMGLMapViewManager manager, MapboxMapOptions options) {
         super(context, options);
@@ -770,12 +774,21 @@ public class RCTMGLMapView extends MapView implements OnMapReadyCallback, Mapbox
         if (mMap != null) {
             removeAllSourcesFromMap();
 
-            mMap.setStyle(styleURL, new Style.OnStyleLoaded() {
-                @Override
-                public void onStyleLoaded(@NonNull Style style) {
-                    addAllSourcesToMap();
-                }
-            });
+            if (isJSONValid(mStyleURL)) {
+                mMap.setStyle(new Style.Builder().fromJson(mStyleURL), new Style.OnStyleLoaded() {
+                    @Override
+                    public void onStyleLoaded(@NonNull Style style) {
+                        addAllSourcesToMap();
+                    }
+                });
+            } else {
+                mMap.setStyle(styleURL, new Style.OnStyleLoaded() {
+                    @Override
+                    public void onStyleLoaded(@NonNull Style style) {
+                        addAllSourcesToMap();
+                    }
+                });
+            }
         }
     }
 
@@ -815,6 +828,41 @@ public class RCTMGLMapView extends MapView implements OnMapReadyCallback, Mapbox
 
     public void setReactLogoEnabled(boolean logoEnabled) {
         mLogoEnabled = logoEnabled;
+        updateUISettings();
+    }
+
+    public void setReactLogoPosition(ReadableMap position) {
+        if (position == null) {
+            // reset from explicit to default
+            if (mLogoGravity != null) {
+                MapboxMapOptions defaultOptions = MapboxMapOptions.createFromAttributes(mContext);
+                mLogoGravity = defaultOptions.getLogoGravity();
+                mLogoMargins = Arrays.copyOf(defaultOptions.getLogoMargins(), 4);
+                updateUISettings();
+            }
+            return;
+        }
+
+        mLogoGravity = Gravity.NO_GRAVITY;
+        if (position.hasKey("left")) {
+            mLogoGravity |= Gravity.START;
+        }
+        if (position.hasKey("right")) {
+            mLogoGravity |= Gravity.END;
+        }
+        if (position.hasKey("top")) {
+            mLogoGravity |= Gravity.TOP;
+        }
+        if (position.hasKey("bottom")) {
+            mLogoGravity |= Gravity.BOTTOM;
+        }
+        float density = getDisplayDensity();
+        mLogoMargins = new int[]{
+            position.hasKey("left") ? (int) density * position.getInt("left") : 0,
+            position.hasKey("top") ? (int) density * position.getInt("top") : 0,
+            position.hasKey("right") ? (int) density * position.getInt("right") : 0,
+            position.hasKey("bottom") ? (int) density * position.getInt("bottom") : 0
+        };
         updateUISettings();
     }
 
@@ -1071,8 +1119,31 @@ public class RCTMGLMapView extends MapView implements OnMapReadyCallback, Mapbox
             );
         }
 
+        if (mTintColor != null) {
+            uiSettings.setAttributionTintColor(mTintColor);
+        }
+
         if (mLogoEnabled != null && uiSettings.isLogoEnabled() != mLogoEnabled) {
             uiSettings.setLogoEnabled(mLogoEnabled);
+        }
+
+        if (mLogoGravity != null && uiSettings.getLogoGravity() != mLogoGravity) {
+            uiSettings.setLogoGravity(mLogoGravity);
+        }
+
+        if (mLogoMargins != null &&
+            (uiSettings.getLogoMarginLeft() != mLogoMargins[0] ||
+                uiSettings.getLogoMarginTop() != mLogoMargins[1] ||
+                uiSettings.getLogoMarginRight() != mLogoMargins[2] ||
+                uiSettings.getLogoMarginBottom() != mLogoMargins[3]
+            )
+        ) {
+            uiSettings.setLogoMargins(
+                mLogoMargins[0],
+                mLogoMargins[1],
+                mLogoMargins[2],
+                mLogoMargins[3]
+            );
         }
 
         if (mCompassEnabled != null && uiSettings.isCompassEnabled() != mCompassEnabled) {
@@ -1375,9 +1446,9 @@ public class RCTMGLMapView extends MapView implements OnMapReadyCallback, Mapbox
         coords.putDouble("latitude", location.getLatitude());
         coords.putDouble("altitude", location.getAltitude());
         coords.putDouble("accuracy", location.getAccuracy());
-        // A better solution will be to pull the heading from the compass engine, 
+        // A better solution will be to pull the heading from the compass engine,
         // unfortunately the api is not publicly available in the mapbox sdk
-        coords.putDouble("heading", location.getBearing()); 
+        coords.putDouble("heading", location.getBearing());
         coords.putDouble("course", location.getBearing());
         coords.putDouble("speed", location.getSpeed());
 
@@ -1427,5 +1498,17 @@ public class RCTMGLMapView extends MapView implements OnMapReadyCallback, Mapbox
             mLocationComponentManager = new LocationComponentManager(this, mContext);
         }
         return mLocationComponentManager;
+    }
+
+    public @Nullable Integer getTintColor() {
+        return mTintColor;
+    }
+
+    public void setTintColor(@Nullable Integer tintColor) {
+        if (mTintColor == tintColor) return;
+        mTintColor = tintColor;
+        updateUISettings();
+        if (mLocationComponentManager == null) return;
+        mLocationComponentManager.update(getMapboxMap().getStyle());
     }
 }

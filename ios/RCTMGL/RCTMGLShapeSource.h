@@ -25,11 +25,16 @@
 @property (nonatomic, strong) NSNumber *maxZoomLevel;
 @property (nonatomic, strong) NSNumber *buffer;
 @property (nonatomic, strong) NSNumber *tolerance;
+@property (nonatomic, strong) NSNumber *lineMetrics;
 
 @property (nonatomic, copy) RCTBubblingEventBlock onPress;
 @property (nonatomic, assign) BOOL hasPressListener;
 
 - (nonnull NSArray<id <MGLFeature>> *)featuresMatchingPredicate:(nullable NSPredicate *)predicate;
+- (nonnull NSArray<id <MGLFeature>> *)getClusterLeaves:(nonnull NSNumber *)clusterId
+                                                number:(NSUInteger)number
+                                                offset:(NSUInteger)offset;
+- (nonnull NSArray<id <MGLFeature>> *)getClusterChildren:(nonnull NSNumber *)clusterId;                                               
 
 - (double)getClusterExpansionZoom:(nonnull NSNumber *)clusterId;
 
