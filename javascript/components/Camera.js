@@ -475,14 +475,13 @@ class Camera extends React.Component {
 
     if (config.centerCoordinate) {
       const {
-        centerCoordinate,
         paddingLeft,
         paddingRight,
         paddingTop,
         paddingBottom,
-      } = config;
+      } = config.padding;
       stopConfig.centerCoordinate = toJSONString(
-        geoUtils.makePoint(centerCoordinate),
+        geoUtils.makePoint(config.centerCoordinate),
       );
       stopConfig.paddingTop = paddingTop || 0;
       stopConfig.paddingRight = paddingRight || 0;
