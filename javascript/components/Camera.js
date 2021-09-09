@@ -482,7 +482,7 @@ class Camera extends React.Component {
         paddingBottom,
       } = config;
       stopConfig.centerCoordinate = toJSONString(
-        makePoint(centerCoordinate),
+        geoUtils.makePoint(centerCoordinate),
       );
       stopConfig.paddingTop = paddingTop || 0;
       stopConfig.paddingRight = paddingRight || 0;
