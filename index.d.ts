@@ -502,19 +502,23 @@ export interface CameraProps extends CameraSettings, ViewProps {
   ) => void;
 }
 
+interface CameraPadding {
+  paddingLeft?: number;
+  paddingRight?: number;
+  paddingTop?: number;
+  paddingBottom?: number;
+}
+
 export interface CameraSettings {
   centerCoordinate?: GeoJSON.Position;
   heading?: number;
   pitch?: number;
-  bounds?: {
+  bounds?: CameraPadding & {
     ne: GeoJSON.Position;
     sw: GeoJSON.Position;
-    paddingLeft?: number;
-    paddingRight?: number;
-    paddingTop?: number;
-    paddingBottom?: number;
   };
   zoomLevel?: number;
+  padding?: CameraPadding;
   animationDuration?: number;
   animationMode?: 'flyTo' | 'easeTo' | 'linearTo' | 'moveTo';
   stops?: CameraSettings[];
