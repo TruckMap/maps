@@ -86,13 +86,6 @@ class ShapeSource extends NativeBridgeComponent(AbstractSource) {
     tolerance: PropTypes.number,
 
     /**
-     * Whether to calculate line distance metrics.
-     * This is required for line layers that specify lineGradient values.
-     * The default value is false.
-     */
-    lineMetrics: PropTypes.bool,
-
-    /**
      * Source press listener, gets called when a user presses one of the children layers only
      * if that layer has a higher z-index than another source layers
      *
@@ -172,54 +165,6 @@ class ShapeSource extends NativeBridgeComponent(AbstractSource) {
     return res.data;
   }
 
-  /**
-   * Returns the FeatureCollection from the cluster.
-   *
-   * @example
-   * const collection = await shapeSource.getClusterLeaves(clusterId, limit, offset);
-   *
-   * @param  {number} clusterId - The id of the cluster to expand.
-   * @param  {number} limit - The number of points to return.
-   * @param  {number} offset - The amount of points to skip (for pagination).
-   * @return {FeatureCollection}
-   */
-  async getClusterLeaves(clusterId, limit, offset) {
-    const res = await this._runNativeCommand(
-      'getClusterLeaves',
-      this._nativeRef,
-      [clusterId, limit, offset],
-    );
-
-    if (isAndroid()) {
-      return JSON.parse(res.data);
-    }
-
-    return res.data;
-  }
-
-  /**
-   * Returns the FeatureCollection from the cluster (on the next zoom level).
-   *
-   * @example
-   * const collection = await shapeSource.getClusterChildren(clusterId);
-   *
-   * @param  {number} clusterId - The id of the cluster to expand.
-   * @return {FeatureCollection}
-   */
-  async getClusterChildren(clusterId) {
-    const res = await this._runNativeCommand(
-      'getClusterChildren',
-      this._nativeRef,
-      [clusterId],
-    );
-
-    if (isAndroid()) {
-      return JSON.parse(res.data);
-    }
-
-    return res.data;
-  }
-
   setNativeProps(props) {
     const shallowProps = Object.assign({}, props);
 
@@ -281,7 +226,6 @@ class ShapeSource extends NativeBridgeComponent(AbstractSource) {
       maxZoomLevel: this.props.maxZoomLevel,
       buffer: this.props.buffer,
       tolerance: this.props.tolerance,
-      lineMetrics: this.props.lineMetrics,
       onPress: undefined,
       ref: (nativeRef) => this._setNativeRef(nativeRef),
       onAndroidCallback: isAndroid() ? this._onAndroidCallback : undefined,

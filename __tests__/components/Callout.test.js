@@ -1,5 +1,5 @@
 import React from 'react';
-import {render} from '@testing-library/react-native';
+import {render} from 'react-native-testing-library';
 import {Text, View} from 'react-native';
 
 import Callout from '../../javascript/components/Callout';

@@ -24,8 +24,7 @@ class LocationManager {
       // let's silently catch it and simply log out
       // instead of throwing an exception
       try {
-        lastKnownLocation =
-          await MapboxGLLocationManager.getLastKnownLocation();
+        lastKnownLocation = await MapboxGLLocationManager.getLastKnownLocation();
       } catch (error) {
         console.log('locationManager Error: ', error);
       }

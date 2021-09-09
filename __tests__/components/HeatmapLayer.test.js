@@ -1,5 +1,5 @@
 import React from 'react';
-import {render} from '@testing-library/react-native';
+import {render} from 'react-native-testing-library';
 
 import HeatmapLayer from '../../javascript/components/HeatmapLayer';
 

@@ -165,11 +165,6 @@ public class RCTMGLMapViewManager extends AbstractEventEmitter<RCTMGLMapView> {
         mapView.setReactLogoEnabled(logoEnabled);
     }
 
-    @ReactProp(name="logoPosition")
-    public void setLogoPosition(RCTMGLMapView mapView, ReadableMap logoPosition) {
-        mapView.setReactLogoPosition(logoPosition);
-    }
-
     @ReactProp(name="compassEnabled")
     public void setCompassEnabled(RCTMGLMapView mapView, boolean compassEnabled) {
         mapView.setReactCompassEnabled(compassEnabled);
@@ -188,11 +183,6 @@ public class RCTMGLMapViewManager extends AbstractEventEmitter<RCTMGLMapView> {
     @ReactProp(name="contentInset")
     public void setContentInset(RCTMGLMapView mapView, ReadableArray array) {
         mapView.setReactContentInset(array);
-    }
-
-    @ReactProp(name = "tintColor", customType = "Color")
-    public void setTintColor(RCTMGLMapView mapView, @Nullable Integer tintColor) {
-        mapView.setTintColor(tintColor);
     }
 
     //endregion

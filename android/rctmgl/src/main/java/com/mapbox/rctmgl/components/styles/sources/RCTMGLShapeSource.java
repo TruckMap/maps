@@ -48,7 +48,6 @@ public class RCTMGLShapeSource extends RCTSource<GeoJsonSource> {
     private Integer mMaxZoom;
     private Integer mBuffer;
     private Double mTolerance;
-    private Boolean mLineMetrics;
 
     private static Bitmap mImagePlaceholder;
     private List<Map.Entry<String, ImageEntry>> mImages;
@@ -122,10 +121,6 @@ public class RCTMGLShapeSource extends RCTSource<GeoJsonSource> {
         mTolerance = tolerance;
     }
 
-    public void setLineMetrics(boolean lineMetrics) {
-        mLineMetrics = lineMetrics;
-    }
-
     public void onPress(OnPressEvent event) {
         mManager.handleEvent(FeatureClickEvent.makeShapeSourceEvent(this, event));
     }
@@ -155,10 +150,6 @@ public class RCTMGLShapeSource extends RCTSource<GeoJsonSource> {
 
         if (mTolerance != null) {
             options.withTolerance(mTolerance.floatValue());
-        }
-
-        if (mLineMetrics != null) {
-            options.withLineMetrics(mLineMetrics);
         }
 
         return options;
@@ -205,26 +196,6 @@ public class RCTMGLShapeSource extends RCTSource<GeoJsonSource> {
 
         WritableMap payload = new WritableNativeMap();
         payload.putInt("data", zoom);
-
-        AndroidCallbackEvent event = new AndroidCallbackEvent(this, callbackID, payload);
-        mManager.handleEvent(event);
-    }
-
-    public void getClusterLeaves(String callbackID, int clusterId, int number, int offset) {
-        Feature clusterFeature = mSource.querySourceFeatures(Expression.eq(Expression.get("cluster_id"), clusterId)).get(0);
-        FeatureCollection leaves = mSource.getClusterLeaves(clusterFeature, number, offset);
-        WritableMap payload = new WritableNativeMap();
-        payload.putString("data", leaves.toJson());
-
-        AndroidCallbackEvent event = new AndroidCallbackEvent(this, callbackID, payload);
-        mManager.handleEvent(event);
-    }
-
-    public void getClusterChildren(String callbackID, int clusterId) {
-        Feature clusterFeature = mSource.querySourceFeatures(Expression.eq(Expression.get("cluster_id"), clusterId)).get(0);
-        FeatureCollection leaves = mSource.getClusterChildren(clusterFeature);
-        WritableMap payload = new WritableNativeMap();
-        payload.putString("data", leaves.toJson());
 
         AndroidCallbackEvent event = new AndroidCallbackEvent(this, callbackID, payload);
         mManager.handleEvent(event);
