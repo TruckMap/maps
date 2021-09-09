@@ -129,8 +129,7 @@ class MapView extends NativeBridgeComponent(React.Component) {
     ]),
 
     /**
-     * MapView's tintColor - ios only
-     * @platform ios
+     * MapView's tintColor
      */
     tintColor: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
 
@@ -138,6 +137,16 @@ class MapView extends NativeBridgeComponent(React.Component) {
      * Enable/Disable the logo on the map.
      */
     logoEnabled: PropTypes.bool,
+
+    /**
+     * Adds logo offset, e.g. `{top: 8, left: 8}` will put the logo in top-left corner of the map
+     */
+    logoPosition: PropTypes.oneOfType([
+      PropTypes.shape({top: PropTypes.number, left: PropTypes.number}),
+      PropTypes.shape({top: PropTypes.number, right: PropTypes.number}),
+      PropTypes.shape({bottom: PropTypes.number, left: PropTypes.number}),
+      PropTypes.shape({bottom: PropTypes.number, right: PropTypes.number}),
+    ]),
 
     /**
      * Enable/Disable the compass from appearing on the map
@@ -571,14 +580,8 @@ class MapView extends NativeBridgeComponent(React.Component) {
     }
 
     if (config.bounds && config.bounds.ne && config.bounds.sw) {
-      const {
-        ne,
-        sw,
-        paddingLeft,
-        paddingRight,
-        paddingTop,
-        paddingBottom,
-      } = config.bounds;
+      const {ne, sw, paddingLeft, paddingRight, paddingTop, paddingBottom} =
+        config.bounds;
       stopConfig.bounds = toJSONString(makeLatLngBounds(ne, sw));
       stopConfig.boundsPaddingTop = paddingTop || 0;
       stopConfig.boundsPaddingRight = paddingRight || 0;
@@ -616,10 +619,8 @@ class MapView extends NativeBridgeComponent(React.Component) {
   }
 
   _onChange(e) {
-    const {
-      regionWillChangeDebounceTime,
-      regionDidChangeDebounceTime,
-    } = this.props;
+    const {regionWillChangeDebounceTime, regionDidChangeDebounceTime} =
+      this.props;
     const {type, payload} = e.nativeEvent;
     let propName = '';
 

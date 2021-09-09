@@ -94,6 +94,10 @@ static UIImage * _placeHolderImage;
         options[MGLShapeSourceOptionSimplificationTolerance] = _tolerance;
     }
 
+    if (_lineMetrics != nil) {
+        options[MGLShapeSourceOptionLineDistanceMetrics] = _lineMetrics;
+    }
+
     return options;
 }
 
@@ -112,6 +116,30 @@ static UIImage * _placeHolderImage;
         return -1;
     }
     return [shapeSource zoomLevelForExpandingCluster:(MGLPointFeatureCluster *)features[0]];
+}
+
+- (nonnull NSArray<id <MGLFeature>> *)getClusterLeaves:(nonnull NSNumber *)clusterId
+    number:(NSUInteger)number
+    offset:(NSUInteger)offset
+{
+    MGLShapeSource *shapeSource = (MGLShapeSource *)self.source;
+    
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"cluster_id == %@", clusterId];
+    NSArray<id<MGLFeature>> *features = [shapeSource featuresMatchingPredicate:predicate];
+    
+    MGLPointFeatureCluster * cluster = (MGLPointFeatureCluster *)features[0];
+    return [shapeSource leavesOfCluster:cluster offset:offset limit:number];
+}
+
+- (nonnull NSArray<id <MGLFeature>> *)getClusterChildren:(nonnull NSNumber *)clusterId
+{
+    MGLShapeSource *shapeSource = (MGLShapeSource *)self.source;
+    
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"cluster_id == %@", clusterId];
+    NSArray<id<MGLFeature>> *features = [shapeSource featuresMatchingPredicate:predicate];
+    
+    MGLPointFeatureCluster * cluster = (MGLPointFeatureCluster *)features[0];
+    return [shapeSource childrenOfCluster:cluster];
 }
 
 @end

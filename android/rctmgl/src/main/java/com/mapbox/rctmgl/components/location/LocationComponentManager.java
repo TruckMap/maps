@@ -100,7 +100,9 @@ public class LocationComponentManager {
     }
 
     public void update(boolean displayUserLocation, @NonNull Style style) {
-        if (mLocationComponent == null) {
+        Integer tintColor = mMapView.getTintColor();
+
+        if (mLocationComponent == null || tintColor != null ) {
             mLocationComponent = mMap.getLocationComponent();
 
             LocationComponentActivationOptions locationComponentActivationOptions = LocationComponentActivationOptions
@@ -124,6 +126,7 @@ public class LocationComponentManager {
 
     LocationComponentOptions options(boolean displayUserLocation) {
         LocationComponentOptions.Builder builder = LocationComponentOptions.builder(mContext);
+        Integer tintColor = mMapView.getTintColor();
         if (!displayUserLocation) {
             builder = builder
                     .padding(mMap.getPadding())
@@ -134,6 +137,12 @@ public class LocationComponentManager {
                     .foregroundDrawableStale(R.drawable.empty)
                     .gpsDrawable(R.drawable.empty)
                     .accuracyAlpha(0.0f);
+        } else if (tintColor != null) {
+            builder = builder
+                .enableStaleState(false)
+                .bearingTintColor(tintColor)
+                .foregroundTintColor(tintColor)
+                .accuracyColor(tintColor);
         }
         return builder.build();
     }
