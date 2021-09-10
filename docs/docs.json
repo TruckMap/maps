@@ -449,6 +449,45 @@
               "description": "Pitch on map"
             },
             {
+              "name": "padding",
+              "required": false,
+              "type": {
+                "name": "shape",
+                "value": [
+                  {
+                    "name": "paddingLeft",
+                    "required": false,
+                    "type": "number",
+                    "default": "none",
+                    "description": "Left camera padding"
+                  },
+                  {
+                    "name": "paddingRight",
+                    "required": false,
+                    "type": "number",
+                    "default": "none",
+                    "description": "Right camera padding"
+                  },
+                  {
+                    "name": "paddingTop",
+                    "required": false,
+                    "type": "number",
+                    "default": "none",
+                    "description": "Top camera padding"
+                  },
+                  {
+                    "name": "paddingBottom",
+                    "required": false,
+                    "type": "number",
+                    "default": "none",
+                    "description": "Bottom camera padding"
+                  }
+                ]
+              },
+              "default": "none",
+              "description": "Represents edge padding around the map in points."
+            },
+            {
               "name": "bounds",
               "required": false,
               "type": {
@@ -555,6 +594,45 @@
         "type": "number",
         "default": "none",
         "description": "Pitch on map"
+      },
+      {
+        "name": "padding",
+        "required": false,
+        "type": {
+          "name": "shape",
+          "value": [
+            {
+              "name": "paddingLeft",
+              "required": false,
+              "type": "number",
+              "default": "none",
+              "description": "Left camera padding"
+            },
+            {
+              "name": "paddingRight",
+              "required": false,
+              "type": "number",
+              "default": "none",
+              "description": "Right camera padding"
+            },
+            {
+              "name": "paddingTop",
+              "required": false,
+              "type": "number",
+              "default": "none",
+              "description": "Top camera padding"
+            },
+            {
+              "name": "paddingBottom",
+              "required": false,
+              "type": "number",
+              "default": "none",
+              "description": "Bottom camera padding"
+            }
+          ]
+        },
+        "default": "none",
+        "description": "Represents edge padding around the map in points."
       },
       {
         "name": "bounds",

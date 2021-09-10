@@ -11,6 +11,11 @@
 | &nbsp;&nbsp;centerCoordinate | `array` | `none` | `false` | Center coordinate on map [lng, lat] |
 | &nbsp;&nbsp;heading | `number` | `none` | `false` | Heading on map |
 | &nbsp;&nbsp;pitch | `number` | `none` | `false` | Pitch on map |
+| &nbsp;&nbsp;padding | `shape` | `none` | `false` | Represents edge padding around the map in points. |
+| &nbsp;&nbsp;&nbsp;&nbsp;paddingLeft | `number` | `none` | `false` | Left camera padding |
+| &nbsp;&nbsp;&nbsp;&nbsp;paddingRight | `number` | `none` | `false` | Right camera padding |
+| &nbsp;&nbsp;&nbsp;&nbsp;paddingTop | `number` | `none` | `false` | Top camera padding |
+| &nbsp;&nbsp;&nbsp;&nbsp;paddingBottom | `number` | `none` | `false` | Bottom camera padding |
 | &nbsp;&nbsp;bounds | `shape` | `none` | `false` | Represents a rectangle in geographical coordinates marking the visible area of the map. |
 | &nbsp;&nbsp;&nbsp;&nbsp;ne | `array` | `none` | `true` | North east coordinate of bound |
 | &nbsp;&nbsp;&nbsp;&nbsp;sw | `array` | `none` | `true` | South west coordinate of bound |
@@ -23,6 +28,11 @@
 | centerCoordinate | `array` | `none` | `false` | Center coordinate on map [lng, lat] |
 | heading | `number` | `none` | `false` | Heading on map |
 | pitch | `number` | `none` | `false` | Pitch on map |
+| padding | `shape` | `none` | `false` | Represents edge padding around the map in points. |
+| &nbsp;&nbsp;paddingLeft | `number` | `none` | `false` | Left camera padding |
+| &nbsp;&nbsp;paddingRight | `number` | `none` | `false` | Right camera padding |
+| &nbsp;&nbsp;paddingTop | `number` | `none` | `false` | Top camera padding |
+| &nbsp;&nbsp;paddingBottom | `number` | `none` | `false` | Bottom camera padding |
 | bounds | `shape` | `none` | `false` | Represents a rectangle in geographical coordinates marking the visible area of the map. |
 | &nbsp;&nbsp;ne | `array` | `none` | `true` | North east coordinate of bound |
 | &nbsp;&nbsp;sw | `array` | `none` | `true` | South west coordinate of bound |
