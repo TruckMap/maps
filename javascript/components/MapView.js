@@ -555,51 +555,6 @@ class MapView extends NativeBridgeComponent(React.Component) {
     return this._runNativeCommand('showAttribution', this._nativeRef);
   }
 
-  _createStopConfig(config = {}) {
-    const stopConfig = {
-      mode: isNumber(config.mode) ? config.mode : MapboxGL.CameraModes.Ease,
-      pitch: config.pitch,
-      heading: config.heading,
-      duration: config.duration || 2000,
-      zoom: config.zoom,
-    };
-
-    if (config.centerCoordinate) {
-      const {
-        centerCoordinate,
-        paddingLeft,
-        paddingRight,
-        paddingTop,
-        paddingBottom,
-      } = config;
-      stopConfig.centerCoordinate = toJSONString(
-        makePoint(centerCoordinate),
-      );
-      stopConfig.paddingTop = paddingTop || 0;
-      stopConfig.paddingRight = paddingRight || 0;
-      stopConfig.paddingBottom = paddingBottom || 0;
-      stopConfig.paddingLeft = paddingLeft || 0;
-    }
-
-    if (config.bounds && config.bounds.ne && config.bounds.sw) {
-      const {
-        ne,
-        sw,
-        paddingLeft,
-        paddingRight,
-        paddingTop,
-        paddingBottom,
-      } = config.bounds;
-      stopConfig.bounds = toJSONString(makeLatLngBounds(ne, sw));
-      stopConfig.boundsPaddingTop = paddingTop || 0;
-      stopConfig.boundsPaddingRight = paddingRight || 0;
-      stopConfig.boundsPaddingBottom = paddingBottom || 0;
-      stopConfig.boundsPaddingLeft = paddingLeft || 0;
-    }
-
-    return stopConfig;
-  }
-
   _onPress(e) {
     if (isFunction(this.props.onPress)) {
       this.props.onPress(e.nativeEvent.payload);

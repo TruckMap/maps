@@ -26,6 +26,31 @@ const SettingsPropTypes = {
   pitch: PropTypes.number,
 
   /**
+   * Represents edge padding around the map in points.
+   */
+  padding: PropTypes.shape({
+    /**
+     * Left camera padding
+     */
+    paddingLeft: PropTypes.number,
+
+    /**
+     * Right camera padding
+     */
+    paddingRight: PropTypes.number,
+
+    /**
+     * Top camera padding
+     */
+    paddingTop: PropTypes.number,
+
+    /**
+     * Bottom camera padding
+     */
+    paddingBottom: PropTypes.number,
+  }),
+
+  /**
    * Represents a rectangle in geographical coordinates marking the visible area of the map.
    */
   bounds: PropTypes.shape({
@@ -202,12 +227,10 @@ class Camera extends React.Component {
       zoomLevel: nextCamera.zoomLevel,
       pitch: nextCamera.pitch,
       heading: nextCamera.heading,
+      padding: nextCamera.padding,
     };
 
-    if (
-      nextCamera.bounds &&
-      this._hasBoundsChanged(currentCamera, nextCamera)
-    ) {
+    if (nextCamera.bounds) {
       cameraConfig.bounds = nextCamera.bounds;
     } else {
       cameraConfig.centerCoordinate = nextCamera.centerCoordinate;
@@ -224,6 +247,7 @@ class Camera extends React.Component {
       c.heading !== n.heading ||
       this._hasCenterCoordinateChanged(c, n) ||
       this._hasBoundsChanged(c, n) ||
+      this._hasPaddingChanged(c, n) ||
       c.pitch !== n.pitch ||
       c.zoomLevel !== n.zoomLevel ||
       c.triggerKey !== n.triggerKey;
@@ -286,6 +310,26 @@ class Camera extends React.Component {
       cB.paddingLeft !== nB.paddingLeft ||
       cB.paddingRight !== nB.paddingRight ||
       cB.paddingBottom !== nB.paddingBottom
+    );
+  }
+
+  _hasPaddingChanged(currentCamera, nextCamera) {
+    const cP = currentCamera.padding;
+    const nP = nextCamera.padding;
+
+    if (!cP && !nP) {
+      return false;
+    }
+
+    if (existenceChange(cP, nP)) {
+      return true;
+    }
+
+    return (
+      cP.paddingTop !== nP.paddingTop ||
+      cP.paddingLeft !== nP.paddingLeft ||
+      cP.paddingRight !== nP.paddingRight ||
+      cP.paddingBottom !== nP.paddingBottom
     );
   }
 
@@ -474,36 +518,20 @@ class Camera extends React.Component {
     };
 
     if (config.centerCoordinate) {
-      const {
-        paddingLeft,
-        paddingRight,
-        paddingTop,
-        paddingBottom,
-      } = config.padding;
       stopConfig.centerCoordinate = toJSONString(
         geoUtils.makePoint(config.centerCoordinate),
       );
-      stopConfig.paddingTop = paddingTop || 0;
-      stopConfig.paddingRight = paddingRight || 0;
-      stopConfig.paddingBottom = paddingBottom || 0;
-      stopConfig.paddingLeft = paddingLeft || 0;
     }
 
     if (config.bounds && config.bounds.ne && config.bounds.sw) {
-      const {
-        ne,
-        sw,
-        paddingLeft,
-        paddingRight,
-        paddingTop,
-        paddingBottom,
-      } = config.bounds;
+      const { ne, sw } = config.bounds;
       stopConfig.bounds = toJSONString(geoUtils.makeLatLngBounds(ne, sw));
-      stopConfig.boundsPaddingTop = paddingTop || 0;
-      stopConfig.boundsPaddingRight = paddingRight || 0;
-      stopConfig.boundsPaddingBottom = paddingBottom || 0;
-      stopConfig.boundsPaddingLeft = paddingLeft || 0;
     }
+    
+    stopConfig.paddingTop = config.padding?.paddingTop || config.bounds?.paddingTop || 0;
+    stopConfig.paddingRight = config.padding?.paddingRight || config.bounds?.paddingRight || 0;
+    stopConfig.paddingBottom = config.padding?.paddingBottom || config.bounds?.paddingBottom || 0;
+    stopConfig.paddingLeft = config.padding?.paddingLeft || config.bounds?.paddingLeft || 0;
 
     return stopConfig;
   }
