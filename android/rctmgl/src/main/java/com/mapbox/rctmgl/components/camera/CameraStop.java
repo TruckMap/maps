@@ -53,12 +53,15 @@ public class CameraStop {
         mZoom = zoom;
     }
 
-    public void setLatLng(LatLng latLng, int paddingLeft, int paddingRight, int paddingTop, int paddingBottom) {
-        mLatLng = latLng;
+    public void setPadding(int paddingLeft, int paddingRight, int paddingTop, int paddingBottom) {
         mPaddingLeft = paddingLeft;
         mPaddingRight = paddingRight;
         mPaddingTop = paddingTop;
         mPaddingBottom = paddingBottom;
+    }
+
+    public void setLatLng(LatLng latLng) {
+        mLatLng = latLng;
     }
 
     public void setDuration(int duration) {
@@ -69,12 +72,8 @@ public class CameraStop {
         mCallback = callback;
     }
 
-    public void setBounds(LatLngBounds bounds, int paddingLeft, int paddingRight, int paddingTop, int paddingBottom) {
+    public void setBounds(LatLngBounds bounds) {
         mBounds = bounds;
-        mPaddingLeft = paddingLeft;
-        mPaddingRight = paddingRight;
-        mPaddingTop = paddingTop;
-        mPaddingBottom = paddingBottom;
     }
 
     public void setMode(@CameraMode.Mode int mode) {
@@ -152,11 +151,11 @@ public class CameraStop {
             stop.setBearing(readableMap.getDouble("heading"));
         }
 
-        if (readableMap.hasKey("centerCoordinate")) {
-            int paddingTop = getPaddingByKey(readableMap, "paddingTop");
-            int paddingRight = getPaddingByKey(readableMap, "paddingRight");
-            int paddingBottom = getPaddingByKey(readableMap, "paddingBottom");
-            int paddingLeft = getPaddingByKey(readableMap, "paddingLeft");
+        if (readableMap.hasKey("padding")) {
+            int paddingTop = getPaddingByKey(readableMap["padding"], "paddingTop");
+            int paddingRight = getPaddingByKey(readableMap["padding"], "paddingRight");
+            int paddingBottom = getPaddingByKey(readableMap["padding"], "paddingBottom");
+            int paddingLeft = getPaddingByKey(readableMap["padding"], "paddingLeft");
 
             // scale padding by pixel ratio
             DisplayMetrics metrics = context.getResources().getDisplayMetrics();
@@ -165,14 +164,17 @@ public class CameraStop {
             paddingBottom = Float.valueOf(paddingBottom * metrics.scaledDensity).intValue();
             paddingLeft = Float.valueOf(paddingLeft * metrics.scaledDensity).intValue();
 
-            Point target = GeoJSONUtils.toPointGeometry(readableMap.getString("centerCoordinate"));
-            stop.setLatLng(
-                GeoJSONUtils.toLatLng(target),
+            stop.setPadding(
                 paddingLeft,
                 paddingRight,
                 paddingTop,
                 paddingBottom
-            );
+            )
+        }
+
+        if (readableMap.hasKey("centerCoordinate")) {
+            Point target = GeoJSONUtils.toPointGeometry(readableMap.getString("centerCoordinate"));
+            stop.setLatLng(GeoJSONUtils.toLatLng(target));
         }
 
         if (readableMap.hasKey("zoom")) {
@@ -184,26 +186,8 @@ public class CameraStop {
         }
 
         if (readableMap.hasKey("bounds")) {
-            int paddingTop = getPaddingByKey(readableMap, "boundsPaddingTop");
-            int paddingRight = getPaddingByKey(readableMap, "boundsPaddingRight");
-            int paddingBottom = getPaddingByKey(readableMap, "boundsPaddingBottom");
-            int paddingLeft = getPaddingByKey(readableMap, "boundsPaddingLeft");
-
-            // scale padding by pixel ratio
-            DisplayMetrics metrics = context.getResources().getDisplayMetrics();
-            paddingTop = Float.valueOf(paddingTop * metrics.scaledDensity).intValue();
-            paddingRight = Float.valueOf(paddingRight * metrics.scaledDensity).intValue();
-            paddingBottom = Float.valueOf(paddingBottom * metrics.scaledDensity).intValue();
-            paddingLeft = Float.valueOf(paddingLeft * metrics.scaledDensity).intValue();
-
             FeatureCollection collection = FeatureCollection.fromJson(readableMap.getString("bounds"));
-            stop.setBounds(
-                GeoJSONUtils.toLatLngBounds(collection),
-                paddingLeft,
-                paddingRight,
-                paddingTop,
-                paddingBottom
-            );
+            stop.setBounds(GeoJSONUtils.toLatLngBounds(collection));
         }
 
         if (readableMap.hasKey("mode")) {

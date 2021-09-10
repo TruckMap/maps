@@ -14,6 +14,16 @@ const SettingsPropTypes = {
    * Center coordinate on map [lng, lat]
    */
   centerCoordinate: PropTypes.arrayOf(PropTypes.number),
+  
+  /**
+   * Padding around edges of map in points
+   */
+  padding: PropTypes.shape({
+    paddingLeft: PropTypes.number,
+    paddingRight: PropTypes.number,
+    paddingTop: PropTypes.number,
+    paddingBottom: PropTypes.number,
+  }),
 
   /**
    * Heading on map
@@ -27,6 +37,7 @@ const SettingsPropTypes = {
 
   /**
    * Represents a rectangle in geographical coordinates marking the visible area of the map.
+   * The `bounds.padding*` properties are deprecated; use root `padding` property instead.
    */
   bounds: PropTypes.shape({
     /**
@@ -202,6 +213,7 @@ class Camera extends React.Component {
       zoomLevel: nextCamera.zoomLevel,
       pitch: nextCamera.pitch,
       heading: nextCamera.heading,
+      padding: nextCamera.padding,
     };
 
     if (
@@ -340,8 +352,8 @@ class Camera extends React.Component {
       bounds: {
         ne: northEastCoordinates,
         sw: southWestCoordinates,
-        ...pad,
       },
+      padding: pad,
       animationDuration,
       animationMode: Camera.Mode.Ease,
     });
