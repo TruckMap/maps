@@ -69,12 +69,12 @@ const SettingsPropTypes = {
      * Bottom camera padding for bounds
      */
     paddingBottom: PropTypes.number,
-
-    /**
-     * Callback that is triggered on user tracking mode changes
-     */
-    onUserTrackingModeChange: PropTypes.func,
   }),
+
+  /**
+   * Callback that is triggered on user tracking mode changes
+   */
+    onUserTrackingModeChange: PropTypes.func,
 
   /**
    * Zoom level of the map
@@ -207,6 +207,22 @@ class Camera extends React.Component {
       return;
     }
 
+    if (nextCamera.maxBounds) {
+      this.refs.camera.setNativeProps({
+        maxBounds: this._getMaxBounds(),
+      });
+    }
+    if (nextCamera.minZoomLevel) {
+      this.refs.camera.setNativeProps({
+        minZoomLevel: this.props.minZoomLevel,
+      });
+    }
+    if (nextCamera.maxZoomLevel) {
+      this.refs.camera.setNativeProps({
+        maxZoomLevel: this.props.maxZoomLevel,
+      });
+    }
+
     const cameraConfig = {
       animationMode: nextCamera.animationMode,
       animationDuration: nextCamera.animationDuration,
@@ -232,7 +248,7 @@ class Camera extends React.Component {
     const hasDefaultPropsChanged =
       c.heading !== n.heading ||
       this._hasCenterCoordinateChanged(c, n) ||
-      this._hasBoundsChanged(c, n) ||
+      this._hasBoundsChanged(c.bounds, n.bounds) ||
       this._hasPaddingChanged(c, n) ||
       c.pitch !== n.pitch ||
       c.zoomLevel !== n.zoomLevel ||
@@ -248,11 +264,17 @@ class Camera extends React.Component {
     const hasAnimationPropsChanged =
       c.animationMode !== n.animationMode ||
       c.animationDuration !== n.animationDuration;
+    
+    const hasNavigationConstraintsPropsChanged =
+      this._hasBoundsChanged(c.maxBounds, n.maxBounds) ||
+      c.minZoomLevel !== n.minZoomLevel ||
+      c.maxZoomLevel !== n.maxZoomLevel;
 
     return (
       hasDefaultPropsChanged ||
       hasFollowPropsChanged ||
-      hasAnimationPropsChanged
+      hasAnimationPropsChanged ||
+      hasNavigationConstraintsPropsChanged
     );
   }
 
@@ -275,18 +297,13 @@ class Camera extends React.Component {
     return isLngDiff || isLatDiff;
   }
 
-  _hasBoundsChanged(currentCamera, nextCamera) {
-    const cB = currentCamera.bounds;
-    const nB = nextCamera.bounds;
-
+  _hasBoundsChanged(cB, nB) {
     if (!cB && !nB) {
       return false;
     }
-
     if (existenceChange(cB, nB)) {
       return true;
     }
-
     return (
       cB.ne[0] !== nB.ne[0] ||
       cB.ne[1] !== nB.ne[1] ||
