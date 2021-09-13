@@ -50,7 +50,7 @@
     }
     
     if (args[@"padding"]) {
-        NSDictionary padding = args[@"padding"];
+        NSDictionary * padding = args[@"padding"];
         CGFloat paddingTop = padding[@"paddingTop"] ? [padding[@"paddingTop"] floatValue] : 0.0;
         CGFloat paddingRight = padding[@"paddingRight"] ? [padding[@"paddingRight"] floatValue] : 0.0;
         CGFloat paddingBottom = padding[@"paddingBottom"] ? [padding[@"paddingBottom"] floatValue] : 0.0;
