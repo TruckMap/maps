@@ -35,8 +35,6 @@
         [self _moveCamera:mapView animated:YES ease:YES withCompletionHandler:completionHandler];
     } else if (_cameraStop.mode == [NSNumber numberWithInt:RCT_MAPBOX_CAMERA_MODE_LINEAR]) {
         [self _moveCamera:mapView animated:YES ease:NO withCompletionHandler:completionHandler];
-    } else if ([self _areBoundsValid:_cameraStop.bounds]) {
-        [self _fitBoundsCamera:mapView withCompletionHandler:completionHandler];
     } else {
         [self _moveCamera:mapView animated:NO ease:NO withCompletionHandler:completionHandler];
     }
@@ -71,25 +69,6 @@
                  animationTimingFunction:[CAMediaTimingFunction functionWithName:easeFunctionName]
                  edgePadding:nextCamera.boundsPadding
                  completionHandler:completionHandler];
-}
-
-- (void)_fitBoundsCamera:(RCTMGLMapView*)mapView withCompletionHandler:(void (^)(void))completionHandler
-{
-    MGLCoordinateBounds bounds = _cameraStop.bounds;
-    CLLocationCoordinate2D coordinates[] = {
-        { bounds.ne.latitude, bounds.sw.longitude },
-        bounds.sw,
-        { bounds.sw.latitude, bounds.ne.longitude },
-        bounds.ne
-    };
-
-    [mapView setVisibleCoordinates:coordinates
-             count:4
-             edgePadding:[self _clippedPadding:_cameraStop.padding forView:mapView]
-             direction:mapView.direction
-             duration:_cameraStop.duration
-             animationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]
-             completionHandler:completionHandler];
 }
 
 - (RCTMGLCameraWithPadding*)_makeCamera:(RCTMGLMapView*)mapView
