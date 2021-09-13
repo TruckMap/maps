@@ -74,7 +74,7 @@ const SettingsPropTypes = {
   /**
    * Callback that is triggered on user tracking mode changes
    */
-    onUserTrackingModeChange: PropTypes.func,
+  onUserTrackingModeChange: PropTypes.func,
 
   /**
    * Zoom level of the map
