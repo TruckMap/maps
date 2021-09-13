@@ -73,24 +73,6 @@
                  completionHandler:completionHandler];
 }
 
-- (UIEdgeInsets)_clippedPadding:(UIEdgeInsets)padding forView:(RCTMGLMapView*)mapView
-{
-    UIEdgeInsets result = padding;
-    if ((padding.top + padding.bottom) >= mapView.frame.size.height) {
-        double totalPadding = padding.top + padding.bottom;
-        double extra = totalPadding - mapView.frame.size.height + 1.0;
-        result.top -= (padding.top * extra) / totalPadding;
-        result.bottom -= (padding.bottom * extra) / totalPadding;
-    }
-    if ((padding.left + padding.right) >= mapView.frame.size.width) {
-        double totalPadding = padding.left + padding.right;
-        double extra = totalPadding - mapView.frame.size.width + 1.0;
-        result.left -= (padding.left * extra) / totalPadding;
-        result.right -= (padding.right * extra) / totalPadding;
-    }
-    return result;
-}
-
 - (void)_fitBoundsCamera:(RCTMGLMapView*)mapView withCompletionHandler:(void (^)(void))completionHandler
 {
     MGLCoordinateBounds bounds = _cameraStop.bounds;
@@ -150,6 +132,24 @@
     cameraWithPadding.camera = nextCamera;
     cameraWithPadding.boundsPadding = [self _clippedPadding:_cameraStop.padding forView:mapView];
     return cameraWithPadding;
+}
+
+- (UIEdgeInsets)_clippedPadding:(UIEdgeInsets)padding forView:(RCTMGLMapView*)mapView
+{
+    UIEdgeInsets result = padding;
+    if ((padding.top + padding.bottom) >= mapView.frame.size.height) {
+        double totalPadding = padding.top + padding.bottom;
+        double extra = totalPadding - mapView.frame.size.height + 1.0;
+        result.top -= (padding.top * extra) / totalPadding;
+        result.bottom -= (padding.bottom * extra) / totalPadding;
+    }
+    if ((padding.left + padding.right) >= mapView.frame.size.width) {
+        double totalPadding = padding.left + padding.right;
+        double extra = totalPadding - mapView.frame.size.width + 1.0;
+        result.left -= (padding.left * extra) / totalPadding;
+        result.right -= (padding.right * extra) / totalPadding;
+    }
+    return result;
 }
 
 - (BOOL)_areBoundsValid:(MGLCoordinateBounds)bounds {
