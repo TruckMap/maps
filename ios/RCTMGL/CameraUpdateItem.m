@@ -138,17 +138,26 @@
     
     if ([self _isCoordValid:_cameraStop.coordinate]) {
         MGLCoordinateBounds boundsFromCoord = { .sw =  _cameraStop.coordinate, .ne =  _cameraStop.coordinate };
-        MGLMapCamera *boundsCamera = [mapView camera:nextCamera fittingCoordinateBounds:boundsFromCoord edgePadding: [self _clippedPadding:_cameraStop.padding forView:mapView]];
+        MGLMapCamera *boundsCamera = [mapView
+            camera:nextCamera
+            fittingCoordinateBounds:boundsFromCoord
+            edgePadding: [self _clippedPadding:_cameraStop.padding forView:mapView]];
         nextCamera.centerCoordinate = boundsCamera.centerCoordinate;
         nextCamera.altitude = boundsCamera.altitude;
     } else if ([self _areBoundsValid:_cameraStop.bounds]) {
-        MGLMapCamera *boundsCamera = [mapView camera:nextCamera fittingCoordinateBounds:_cameraStop.bounds edgePadding: [self _clippedPadding:_cameraStop.padding forView:mapView]];
+        MGLMapCamera *boundsCamera = [mapView
+            camera:nextCamera
+            fittingCoordinateBounds:_cameraStop.bounds
+            edgePadding: [self _clippedPadding:_cameraStop.padding forView:mapView]];
         nextCamera.centerCoordinate = boundsCamera.centerCoordinate;
         nextCamera.altitude = boundsCamera.altitude;
     }
     
     if (_cameraStop.zoom != nil) {
-        nextCamera.altitude = [mapView altitudeFromZoom:[_cameraStop.zoom doubleValue] atLatitude:nextCamera.centerCoordinate.latitude atPitch:nextCamera.pitch];
+        nextCamera.altitude = [mapView
+            altitudeFromZoom:[_cameraStop.zoom doubleValue]
+            atLatitude:nextCamera.centerCoordinate.latitude
+            atPitch:nextCamera.pitch];
     }
     
     RCTMGLCameraWithPadding* cameraWithPadding = [[RCTMGLCameraWithPadding alloc] init];
