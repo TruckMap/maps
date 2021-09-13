@@ -36,31 +36,6 @@ const SettingsPropTypes = {
   pitch: PropTypes.number,
 
   /**
-   * Represents edge padding around the map in points.
-   */
-  padding: PropTypes.shape({
-    /**
-     * Left camera padding
-     */
-    paddingLeft: PropTypes.number,
-
-    /**
-     * Right camera padding
-     */
-    paddingRight: PropTypes.number,
-
-    /**
-     * Top camera padding
-     */
-    paddingTop: PropTypes.number,
-
-    /**
-     * Bottom camera padding
-     */
-    paddingBottom: PropTypes.number,
-  }),
-
-  /**
    * Represents a rectangle in geographical coordinates marking the visible area of the map.
    * The `bounds.padding*` properties are deprecated; use root `padding` property instead.
    */

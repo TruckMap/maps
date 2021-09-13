@@ -128,6 +128,11 @@ public class RCTMGLShapeSourceManager extends AbstractEventEmitter<RCTMGLShapeSo
         source.setTolerance(tolerance);
     }
 
+    @ReactProp(name = "lineMetrics")
+    public void setLineMetrics(RCTMGLShapeSource source, boolean lineMetrics) {
+        source.setLineMetrics(lineMetrics);
+    }
+
     @ReactProp(name = "hasPressListener")
     public void setHasPressListener(RCTMGLShapeSource source, boolean hasPressListener) {
         source.setHasPressListener(hasPressListener);
@@ -149,6 +154,13 @@ public class RCTMGLShapeSourceManager extends AbstractEventEmitter<RCTMGLShapeSo
     //region React Methods
     public static final int METHOD_FEATURES = 103;
     public static final int METHOD_GET_CLUSTER_EXPANSION_ZOOM = 104;
+    public static final int METHOD_GET_CLUSTER_LEAVES = 105;
+    public static final int METHOD_GET_CLUSTER_CHILDREN = 106;
+
+    // Deprecated. Will be removed in 9+ ver.
+    public static final int METHOD_GET_CLUSTER_EXPANSION_ZOOM_BY_ID = 107;
+    public static final int METHOD_GET_CLUSTER_LEAVES_BY_ID = 108;
+    public static final int METHOD_GET_CLUSTER_CHILDREN_BY_ID = 109;
 
     @Nullable
     @Override
@@ -156,6 +168,14 @@ public class RCTMGLShapeSourceManager extends AbstractEventEmitter<RCTMGLShapeSo
         return MapBuilder.<String, Integer>builder()
                 .put("features", METHOD_FEATURES)
                 .put("getClusterExpansionZoom", METHOD_GET_CLUSTER_EXPANSION_ZOOM)
+                .put("getClusterLeaves", METHOD_GET_CLUSTER_LEAVES)
+                .put("getClusterChildren", METHOD_GET_CLUSTER_CHILDREN)
+
+                // Deprecated. Will be removed in 9+ ver.
+                .put("getClusterExpansionZoomById", METHOD_GET_CLUSTER_EXPANSION_ZOOM_BY_ID)
+                .put("getClusterLeavesById", METHOD_GET_CLUSTER_LEAVES_BY_ID)
+                .put("getClusterChildrenById", METHOD_GET_CLUSTER_CHILDREN_BY_ID)
+               
                 .build();
     }
 
@@ -166,10 +186,41 @@ public class RCTMGLShapeSourceManager extends AbstractEventEmitter<RCTMGLShapeSo
                 source.querySourceFeatures(
                         args.getString(0),
                         ExpressionParser.from(args.getArray(1))
-                        );
+                );
                 break;
             case METHOD_GET_CLUSTER_EXPANSION_ZOOM:
-                source.getClusterExpansionZoom(args.getString(0), args.getInt(1));
+                source.getClusterExpansionZoom(args.getString(0), args.getString(1));
+                break;
+            case METHOD_GET_CLUSTER_LEAVES:
+                source.getClusterLeaves(
+                        args.getString(0),
+                        args.getString(1),
+                        args.getInt(2),
+                        args.getInt((3))
+                );
+                break;
+            case METHOD_GET_CLUSTER_CHILDREN:
+                source.getClusterChildren(
+                        args.getString(0),
+                        args.getString(1)                        
+                );
+                break;
+            case METHOD_GET_CLUSTER_EXPANSION_ZOOM_BY_ID:
+                source.getClusterExpansionZoomById(args.getString(0), args.getInt(1));
+                break;
+            case METHOD_GET_CLUSTER_LEAVES_BY_ID:
+                source.getClusterLeavesById(
+                        args.getString(0),
+                        args.getInt(1),
+                        args.getInt(2),
+                        args.getInt((3))
+                );
+                break;
+            case METHOD_GET_CLUSTER_CHILDREN_BY_ID:
+                source.getClusterChildrenById(
+                        args.getString(0),
+                        args.getInt(1)                        
+                );
                 break;
         }
     }
