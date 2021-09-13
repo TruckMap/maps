@@ -50,7 +50,8 @@
         [mapView
            _flyToCamera:nextCamera.camera
            edgePadding:nextCamera.boundsPadding
-           withDuration:_cameraStop.duration peakAltitude:-1
+           withDuration:_cameraStop.duration
+           peakAltitude:-1
            completionHandler:completionHandler];
     } else {
         [mapView
