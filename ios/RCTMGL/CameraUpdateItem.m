@@ -109,21 +109,6 @@
              completionHandler:completionHandler];
 }
 
-- (void)_centerCoordWithZoomCamera:(RCTMGLMapView*)mapView animated:(BOOL)animated withCompletionHandler:(void (^)(void))completionHandler
-{
-    MGLMapCamera *camera = [MGLMapCamera
-      cameraLookingAtCenterCoordinate:_cameraStop.coordinate
-      altitude:[mapView altitudeFromZoom:[_cameraStop.zoom doubleValue]
-      atLatitude:_cameraStop.coordinate.latitude]
-      pitch:[_cameraStop.pitch floatValue]
-      heading:[_cameraStop.heading floatValue]];
-    [mapView
-      setCamera:camera
-      withDuration:animated ? _cameraStop.duration : 0
-      animationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]
-      completionHandler:completionHandler];
-}
-
 - (RCTMGLCameraWithPadding*)_makeCamera:(RCTMGLMapView*)mapView
 {
     MGLMapCamera *nextCamera = [mapView.camera copy];
