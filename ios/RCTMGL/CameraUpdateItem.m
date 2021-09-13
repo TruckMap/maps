@@ -47,9 +47,16 @@
     RCTMGLCameraWithPadding *nextCamera = [self _makeCamera:mapView];
 
     if ([mapView respondsToSelector:@selector(_flyToCamera:edgePadding:withDuration:peakAltitude:completionHandler:)]) {
-        [mapView _flyToCamera:nextCamera.camera edgePadding:nextCamera.boundsPadding withDuration:_cameraStop.duration peakAltitude:-1 completionHandler:completionHandler];
+        [mapView
+           _flyToCamera:nextCamera.camera
+           edgePadding:nextCamera.boundsPadding
+           withDuration:_cameraStop.duration peakAltitude:-1
+           completionHandler:completionHandler];
     } else {
-        [mapView flyToCamera:nextCamera.camera withDuration:_cameraStop.duration completionHandler:completionHandler];
+        [mapView
+           flyToCamera:nextCamera.camera
+           withDuration:_cameraStop.duration
+           completionHandler:completionHandler];
     }
 }
 
@@ -104,14 +111,17 @@
 
 - (void)_centerCoordWithZoomCamera:(RCTMGLMapView*)mapView animated:(BOOL)animated withCompletionHandler:(void (^)(void))completionHandler
 {
-    MGLMapCamera *camera = [MGLMapCamera cameraLookingAtCenterCoordinate:_cameraStop.coordinate
-                                    fromDistance:[mapView altitudeFromZoom:[_cameraStop.zoom doubleValue] atLatitude:_cameraStop.coordinate.latitude]
-                                    pitch:[_cameraStop.pitch floatValue]
-                                    heading:[_cameraStop.heading floatValue]];
-    [mapView setCamera:camera
-                withDuration:animated ? _cameraStop.duration : 0
-                animationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]
-                completionHandler:completionHandler];
+    MGLMapCamera *camera = [MGLMapCamera
+      cameraLookingAtCenterCoordinate:_cameraStop.coordinate
+      altitude:[mapView altitudeFromZoom:[_cameraStop.zoom doubleValue]
+      atLatitude:_cameraStop.coordinate.latitude]
+      pitch:[_cameraStop.pitch floatValue]
+      heading:[_cameraStop.heading floatValue]];
+    [mapView
+      setCamera:camera
+      withDuration:animated ? _cameraStop.duration : 0
+      animationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]
+      completionHandler:completionHandler];
 }
 
 - (RCTMGLCameraWithPadding*)_makeCamera:(RCTMGLMapView*)mapView
