@@ -435,20 +435,6 @@
               "description": "Center coordinate on map [lng, lat]"
             },
             {
-              "name": "heading",
-              "required": false,
-              "type": "number",
-              "default": "none",
-              "description": "Heading on map"
-            },
-            {
-              "name": "pitch",
-              "required": false,
-              "type": "number",
-              "default": "none",
-              "description": "Pitch on map"
-            },
-            {
               "name": "padding",
               "required": false,
               "type": {
@@ -486,6 +472,20 @@
               },
               "default": "none",
               "description": "Represents edge padding around the map in points."
+            },
+            {
+              "name": "heading",
+              "required": false,
+              "type": "number",
+              "default": "none",
+              "description": "Heading on map"
+            },
+            {
+              "name": "pitch",
+              "required": false,
+              "type": "number",
+              "default": "none",
+              "description": "Pitch on map"
             },
             {
               "name": "bounds",
@@ -555,7 +555,7 @@
                 ]
               },
               "default": "none",
-              "description": "Represents a rectangle in geographical coordinates marking the visible area of the map."
+              "description": "Represents a rectangle in geographical coordinates marking the visible area of the map.\nThe `bounds.padding*` properties are deprecated; use root `padding` property instead."
             },
             {
               "name": "zoomLevel",
@@ -580,20 +580,6 @@
         },
         "default": "none",
         "description": "Center coordinate on map [lng, lat]"
-      },
-      {
-        "name": "heading",
-        "required": false,
-        "type": "number",
-        "default": "none",
-        "description": "Heading on map"
-      },
-      {
-        "name": "pitch",
-        "required": false,
-        "type": "number",
-        "default": "none",
-        "description": "Pitch on map"
       },
       {
         "name": "padding",
@@ -632,7 +618,21 @@
           ]
         },
         "default": "none",
-        "description": "Represents edge padding around the map in points."
+        "description": "Padding around edges of map in points"
+      },
+      {
+        "name": "heading",
+        "required": false,
+        "type": "number",
+        "default": "none",
+        "description": "Heading on map"
+      },
+      {
+        "name": "pitch",
+        "required": false,
+        "type": "number",
+        "default": "none",
+        "description": "Pitch on map"
       },
       {
         "name": "bounds",
@@ -702,7 +702,7 @@
           ]
         },
         "default": "none",
-        "description": "Represents a rectangle in geographical coordinates marking the visible area of the map."
+        "description": "Represents a rectangle in geographical coordinates marking the visible area of the map.\nThe `bounds.padding*` properties are deprecated; use root `padding` property instead."
       },
       {
         "name": "zoomLevel",

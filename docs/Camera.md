@@ -9,14 +9,14 @@
 | animationMode | `enum` | `'easeTo'` | `false` | The animationstyle when the camara updates. One of; `flyTo`, `easeTo`, `linearTo`, `moveTo` |
 | defaultSettings | `shape` | `none` | `false` | Default view settings applied on camera |
 | &nbsp;&nbsp;centerCoordinate | `array` | `none` | `false` | Center coordinate on map [lng, lat] |
-| &nbsp;&nbsp;heading | `number` | `none` | `false` | Heading on map |
-| &nbsp;&nbsp;pitch | `number` | `none` | `false` | Pitch on map |
 | &nbsp;&nbsp;padding | `shape` | `none` | `false` | Represents edge padding around the map in points. |
 | &nbsp;&nbsp;&nbsp;&nbsp;paddingLeft | `number` | `none` | `false` | Left camera padding |
 | &nbsp;&nbsp;&nbsp;&nbsp;paddingRight | `number` | `none` | `false` | Right camera padding |
 | &nbsp;&nbsp;&nbsp;&nbsp;paddingTop | `number` | `none` | `false` | Top camera padding |
 | &nbsp;&nbsp;&nbsp;&nbsp;paddingBottom | `number` | `none` | `false` | Bottom camera padding |
-| &nbsp;&nbsp;bounds | `shape` | `none` | `false` | Represents a rectangle in geographical coordinates marking the visible area of the map. |
+| &nbsp;&nbsp;heading | `number` | `none` | `false` | Heading on map |
+| &nbsp;&nbsp;pitch | `number` | `none` | `false` | Pitch on map |
+| &nbsp;&nbsp;bounds | `shape` | `none` | `false` | Represents a rectangle in geographical coordinates marking the visible area of the map.<br/>The `bounds.padding*` properties are deprecated; use root `padding` property instead. |
 | &nbsp;&nbsp;&nbsp;&nbsp;ne | `array` | `none` | `true` | North east coordinate of bound |
 | &nbsp;&nbsp;&nbsp;&nbsp;sw | `array` | `none` | `true` | South west coordinate of bound |
 | &nbsp;&nbsp;&nbsp;&nbsp;paddingLeft | `number` | `none` | `false` | Left camera padding for bounds |
@@ -26,14 +26,14 @@
 | &nbsp;&nbsp;&nbsp;&nbsp;onUserTrackingModeChange | `func` | `none` | `false` | Callback that is triggered on user tracking mode changes |
 | &nbsp;&nbsp;zoomLevel | `number` | `none` | `false` | Zoom level of the map |
 | centerCoordinate | `array` | `none` | `false` | Center coordinate on map [lng, lat] |
-| heading | `number` | `none` | `false` | Heading on map |
-| pitch | `number` | `none` | `false` | Pitch on map |
-| padding | `shape` | `none` | `false` | Represents edge padding around the map in points. |
+| padding | `shape` | `none` | `false` | Padding around edges of map in points |
 | &nbsp;&nbsp;paddingLeft | `number` | `none` | `false` | Left camera padding |
 | &nbsp;&nbsp;paddingRight | `number` | `none` | `false` | Right camera padding |
 | &nbsp;&nbsp;paddingTop | `number` | `none` | `false` | Top camera padding |
 | &nbsp;&nbsp;paddingBottom | `number` | `none` | `false` | Bottom camera padding |
-| bounds | `shape` | `none` | `false` | Represents a rectangle in geographical coordinates marking the visible area of the map. |
+| heading | `number` | `none` | `false` | Heading on map |
+| pitch | `number` | `none` | `false` | Pitch on map |
+| bounds | `shape` | `none` | `false` | Represents a rectangle in geographical coordinates marking the visible area of the map.<br/>The `bounds.padding*` properties are deprecated; use root `padding` property instead. |
 | &nbsp;&nbsp;ne | `array` | `none` | `true` | North east coordinate of bound |
 | &nbsp;&nbsp;sw | `array` | `none` | `true` | South west coordinate of bound |
 | &nbsp;&nbsp;paddingLeft | `number` | `none` | `false` | Left camera padding for bounds |
