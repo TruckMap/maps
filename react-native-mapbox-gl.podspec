@@ -37,7 +37,7 @@ def $RNMBGL.post_install(installer)
       url: "https://github.com/maplibre/maplibre-gl-native-distribution",
       requirement: {
         kind: "exactVersion",
-        version: "5.12.0"
+        version: "5.12.1"
       },
       product_name: "Mapbox"
     }
@@ -98,6 +98,9 @@ Pod::Spec.new do |s|
 
   s.subspec 'DynamicLibrary' do |sp|
     sp.source_files	= "ios/RCTMGL/**/*.{h,m}"
+    if $RNMGL_USE_MAPLIBRE
+      sp.compiler_flags = '-DRNMGL_USE_MAPLIBRE=1'
+    end
   end
 
   if ENV["REACT_NATIVE_MAPBOX_GL_USE_FRAMEWORKS"]
