@@ -6,14 +6,12 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios --simulator=\"iPhone SE (3rd generation)\"",
     "pod:install": "cd ios && pod install",
-    "preios": "yarn pod:install && yarn fix-nvm-ios",
     "start": "react-native start",
     "postinstall": "node ./scripts/set_access_token.js && jetifier",
     "purge:android": "(cd android && ./gradlew --stop) && rm -rf ~/.gradle/caches/ android/app/build",
     "purge:ios": "rm -rf ios/Pods/* ios/build ~/Library/Caches/CocoaPods ~/Library/Developer/Xcode/DerivedData && pod cache clean --all",
     "purge:js": "rm -rf node_modules && yarn cache clean && watchman watch-del-all",
     "purge": "yarn purge:js && yarn purge:android && yarn purge:ios",
-    "fix-nvm-ios": "node ./scripts/fix_nvm_issue.js",
     "type:check": "tsc --noEmit"
   },
   "dependencies": {
@@ -57,7 +55,7 @@
     "babel-plugin-module-resolver": "^4.1.0",
     "detox": "^19.1.0 <19.5.2 || >19.5.2",
     "glob-to-regexp": "^0.4.0",
-    "jest": "^27.1.0",
+    "jest": "^29.0.0",
     "jest-circus": "^27.1.1",
     "jetifier": "^2.0.0",
     "metro-react-native-babel-preset": "^0.64.0",
