@@ -90,7 +90,7 @@
     "mapbox-gl": "^2.9.0",
     "metro-react-native-babel-preset": "0.71.1",
     "node-dir": "0.1.17",
-    "prettier": "2.6.2",
+    "prettier": "2.7.1",
     "react": "17.0.2",
     "react-docgen": "rnmapbox/react-docgen#rnmapbox-dist",
     "react-native": "0.67.0",
