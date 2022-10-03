@@ -1,6 +1,6 @@
 import { NativeModules } from 'react-native';
 
-import { Camera } from './components/Camera';
+import { Camera, UserTrackingModes } from './components/Camera';
 import { Atmosphere } from './components/Atmosphere';
 import MapView from './components/MapView';
 import Light from './components/Light';
@@ -9,7 +9,7 @@ import Annotation from './components/annotations/Annotation';
 import Callout from './components/Callout';
 import UserLocation from './components/UserLocation';
 import VectorSource from './components/VectorSource';
-import ShapeSource from './components/ShapeSource';
+import { ShapeSource } from './components/ShapeSource';
 import RasterSource from './components/RasterSource';
 import RasterDemSource from './components/RasterDemSource';
 import ImageSource from './components/ImageSource';
@@ -20,10 +20,10 @@ import HeatmapLayer from './components/HeatmapLayer';
 import LineLayer from './components/LineLayer';
 import CircleLayer from './components/CircleLayer';
 import SkyLayer from './components/SkyLayer';
-import SymbolLayer from './components/SymbolLayer';
+import { SymbolLayer } from './components/SymbolLayer';
 import RasterLayer from './components/RasterLayer';
 import BackgroundLayer from './components/BackgroundLayer';
-import Terrain from './components/Terrain';
+import { Terrain } from './components/Terrain';
 import locationManager from './modules/location/locationManager';
 import offlineManager from './modules/offline/offlineManager';
 import snapshotManager from './modules/snapshot/snapshotManager';
@@ -38,13 +38,14 @@ import {
 } from './classes';
 import Style from './components/Style';
 import Logger from './utils/Logger';
+import { deprecatedClass } from './utils/deprecation';
 import { requestAndroidLocationPermissions } from './requestAndroidLocationPermissions';
 
 const MapboxGL = { ...NativeModules.MGLModule };
 
 // static methods
 MapboxGL.requestAndroidLocationPermissions = requestAndroidLocationPermissions;
-MapboxGL.UserTrackingModes = Camera.UserTrackingModes;
+MapboxGL.UserTrackingModes = UserTrackingModes;
 
 // components
 MapboxGL.MapView = MapView;
@@ -57,7 +58,10 @@ MapboxGL.Style = Style;
 
 // classes
 MapboxGL.AnimatedPoint = AnimatedPoint;
-MapboxGL.AnimatedMapPoint = AnimatedPoint; // For backwards compatibiilty.
+MapboxGL.AnimatedMapPoint = deprecatedClass(
+  AnimatedPoint,
+  'AnimatedMapPoint is deprecated please use AnimatedPoint',
+);
 MapboxGL.AnimatedShape = AnimatedShape;
 MapboxGL.AnimatedCoordinatesArray = AnimatedCoordinatesArray;
 MapboxGL.AnimatedExtractCoordinateFromArray =
