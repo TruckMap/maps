@@ -85,7 +85,7 @@
     "@babel/runtime": "7.19.0",
     "@react-native-community/eslint-config": "^3.2.0",
     "@sinonjs/fake-timers": "^8.0.1",
-    "@testing-library/react-native": "^11.0.0",
+    "@testing-library/react-native": "^12.1.2",
     "@types/debounce": "^1.2.1",
     "@types/mapbox-gl": "^2.7.5",
     "@types/react-native": ">=0.59.9",
