@@ -44,7 +44,7 @@ RCT_EXPORT_MODULE();
 #else
     [self.bridge.uiManager
      addUIBlock:^(RCTUIManager *uiManager, NSDictionary<NSNumber *, UIView *> *viewRegistry) {
-        RNMBXCamera *view = [uiManager viewForReactTag:viewRef];
+        RNMBXCamera *view = (RNMBXCamera*)[uiManager viewForReactTag: viewRef];
 #endif // RCT_NEW_ARCH_ENABLED
         if (view != nil) {
            block(view);
@@ -61,6 +61,7 @@ RCT_EXPORT_METHOD(updateCameraStop:(nonnull NSNumber *)viewRef
 {
     [self withCamera:viewRef block:^(RNMBXCamera *view) {
       [view updateCameraStop: stop];
+//      resolve(@true);
     } reject:reject methodName:@"someMethod"];
 }
 
